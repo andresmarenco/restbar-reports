@@ -1,7 +1,10 @@
 package restbar.reports.output;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,17 +24,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  * @param <T> Table object to use in the spreadsheet
  */
 public abstract class SpreadsheetGenerator<T> {
-	private static Log log = LogFactory.getLog(SpreadsheetGenerator.class);
-	
-	
-	
-	/**
-	 * Generates a spreadsheet with the given list
-	 * @param outputName Output file name
-	 * @param data List with data
-	 * @throws IOException 
-	 */
-	public abstract void generate(String outputName, List<T> data) throws IOException;
+	protected static Log log = LogFactory.getLog(SpreadsheetGenerator.class);
 	
 	
 	/**
@@ -117,6 +110,37 @@ public abstract class SpreadsheetGenerator<T> {
 	 */
 	protected void writeHeader(HSSFWorkbook workbook, RowBuilder rowBuilder) {
 		
+	}
+	
+	
+	
+	/**
+	 * Generates a spreadsheet with the given list
+	 * @param outputName Output file name
+	 * @param data List with data
+	 * @throws IOException 
+	 */
+	public void generate(String outputName, List<T> data) throws IOException {
+		log.info(MessageFormat.format("Creating \"{0}\"...", outputName));
+
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		HSSFSheet sheet = workbook.createSheet(this.getReportText());
+		
+		try
+		{
+			RowBuilder rowBuilder = new RowBuilder(sheet);
+			this.writeColumnNames(workbook, rowBuilder);
+			FooterData footerData = this.writeData(workbook, rowBuilder, data);
+			this.writeFooter(workbook, rowBuilder, footerData);
+		
+			FileOutputStream out = new FileOutputStream(new File("C:\\" + outputName));
+			workbook.write(out);
+
+			log.info("Report successfully generated!");
+		}
+		finally {
+			workbook.close();
+		}
 	}
 	
 	

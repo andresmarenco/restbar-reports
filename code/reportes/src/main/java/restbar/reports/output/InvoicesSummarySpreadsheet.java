@@ -1,14 +1,9 @@
 package restbar.reports.output;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -21,41 +16,6 @@ import restbar.reports.data.InvoiceSummary;
  *
  */
 public class InvoicesSummarySpreadsheet extends SpreadsheetGenerator<InvoiceSummary> {
-	
-	private static Log log = LogFactory.getLog(InvoicesSummarySpreadsheet.class);
-	
-	/**
-	 * Generates a spreadsheet with the given list of invoices summary
-	 * @param outputName Output file name
-	 * @param invoicesSummary List of invoices summary
-	 * @throws IOException 
-	 */
-	@Override
-	public void generate(String outputName, List<InvoiceSummary> invoicesSummary) throws IOException {
-		log.info(MessageFormat.format("Creating \"{0}\"...", outputName));
-
-		HSSFWorkbook workbook = new HSSFWorkbook();
-		HSSFSheet sheet = workbook.createSheet(this.getReportText());
-		
-		try
-		{
-			RowBuilder rowBuilder = new RowBuilder(sheet);
-			this.writeColumnNames(workbook, rowBuilder);
-			FooterData footerData = this.writeData(workbook, rowBuilder, invoicesSummary);
-			this.writeFooter(workbook, rowBuilder, footerData);
-		
-			FileOutputStream out = new FileOutputStream(new File("C:\\" + outputName));
-			workbook.write(out);
-
-			log.info("Report successfully generated!");
-		}
-		finally {
-			workbook.close();
-		}
-		
-	}
-	
-	
 	
 	
 	@Override
