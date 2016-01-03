@@ -1,6 +1,7 @@
 package restbar.reports;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -60,6 +61,10 @@ public class ReportsController {
 			log.error(ex.getMessage(), ex);
 			throw new ReportsException("Could not create ouput file");
 		}
+		catch(SQLException ex) {
+			log.error(ex.getMessage(), ex);
+			throw new ReportsException("Could not obtain data from database connection");
+		}
 	}
 	
 	
@@ -80,6 +85,10 @@ public class ReportsController {
 		catch(IOException ex) {
 			log.error(ex.getMessage(), ex);
 			throw new ReportsException("Could not create ouput file");
+		}
+		catch(SQLException ex) {
+			log.error(ex.getMessage(), ex);
+			throw new ReportsException("Could not obtain data from database connection");
 		}
 	}
 	

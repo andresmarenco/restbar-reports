@@ -39,8 +39,9 @@ public class InvoicesDAO {
 	 * @param fromDate Initial date for the range filter (or <code>null</code>)
 	 * @param toDate Final date for the range filter (or <code>null</code>)
 	 * @return {@link List} with the invoices
+	 * @throws SQLException 
 	 */
-	public List<Invoice> listAllInvoices(LocalDate fromDate, LocalDate toDate) {
+	public List<Invoice> listAllInvoices(LocalDate fromDate, LocalDate toDate) throws SQLException {
 		List<Invoice> result = null;
 		Connection connection = null;
 		PreparedStatement stmt = null;
@@ -77,9 +78,6 @@ public class InvoicesDAO {
 			
 			result = this.executeInvoicesQuery(stmt);
 		}
-		catch(SQLException ex) {
-			log.error(ex.getMessage(), ex);
-		}
 		finally {
 			DBUtils.close(stmt);
 			DBUtils.close(connection);
@@ -93,8 +91,9 @@ public class InvoicesDAO {
 	/**
 	 * Lists all the invoices in the table
 	 * @return {@link List} with the invoices
+	 * @throws SQLException 
 	 */
-	public List<Invoice> listAllInvoices() {
+	public List<Invoice> listAllInvoices() throws SQLException {
 		return listAllInvoices(null, null);
 	}
 	
@@ -105,8 +104,9 @@ public class InvoicesDAO {
 	 * @param fromDate Initial date for the range filter (or <code>null</code>)
 	 * @param toDate Final date for the range filter (or <code>null</code>)
 	 * @return {@link List} with summary of the invoices
+	 * @throws SQLException 
 	 */
-	public List<InvoiceSummary> listInvoicesSummary(LocalDate fromDate, LocalDate toDate) {
+	public List<InvoiceSummary> listInvoicesSummary(LocalDate fromDate, LocalDate toDate) throws SQLException {
 		List<InvoiceSummary> result = null;
 		Connection connection = null;
 		PreparedStatement stmt = null;
@@ -143,9 +143,6 @@ public class InvoicesDAO {
 			log.info("SQL Query: " + sql.toString() + " [fromDate: " + fromDate + "] [toDate: " + toDate + "]");
 			
 			result = this.executeInvoicesSummaryQuery(stmt);
-		}
-		catch(SQLException ex) {
-			log.error(ex.getMessage(), ex);
 		}
 		finally {
 			DBUtils.close(stmt);

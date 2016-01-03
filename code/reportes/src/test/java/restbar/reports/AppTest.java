@@ -1,4 +1,4 @@
-package restbar.reportes;
+package restbar.reports;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

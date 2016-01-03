@@ -3,8 +3,6 @@ package restbar.reports.output;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
 import restbar.reports.data.Invoice;
 
 /**
@@ -25,13 +23,13 @@ public class InvoicesSpreadsheet extends SpreadsheetGenerator<Invoice> {
 	}
 
 	@Override
-	protected void writeColumnNames(HSSFWorkbook workbook, RowBuilder rowBuilder) {
+	protected void writeColumnNames(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected InvoicesFooterData writeData(HSSFWorkbook workbook, RowBuilder rowBuilder,
+	protected InvoicesFooterData writeData(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder,
 			List<Invoice> data) {
 		// TODO Auto-generated method stub
 		return null;
@@ -44,7 +42,7 @@ public class InvoicesSpreadsheet extends SpreadsheetGenerator<Invoice> {
 	}
 
 	@Override
-	protected void writeFooter(HSSFWorkbook workbook, SpreadsheetGenerator<Invoice>.RowBuilder rowBuilder,
+	protected void writeFooter(SpreadsheetFormatHelper formatHelper, SpreadsheetGenerator<Invoice>.RowBuilder rowBuilder,
 			FooterData footerData) {
 		// TODO Auto-generated method stub
 		
