@@ -23,22 +23,7 @@ public class App
         	
         	ReportsController controller = new ReportsController();
         	
-        	controller.generateInvoicesSummaryReport(fromDate, toDate);
-        	
-        	
-        	
-//        	Connection connection = connManager.getConnection();
-//        	
-//            String sql="SELECT orden FROM FACTURA1";// usual sql query
-//            Statement stmt=connection.createStatement();
-//            ResultSet resultSet=stmt.executeQuery(sql);
-//            while(resultSet.next())
-//            {
-//                System.out.println(resultSet.getString(1));
-//            }
-//            System.out.println();
-//            
-//            connection.close();
+        	controller.generateInvoicesReport(fromDate, toDate);
         }
         catch (Exception e)
         {
