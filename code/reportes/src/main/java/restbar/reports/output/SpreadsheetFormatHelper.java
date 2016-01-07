@@ -41,6 +41,8 @@ public class SpreadsheetFormatHelper {
 		this.cellStyles.put(CellStyles.COLUMN_HEADER, this.createColumnHeaderStyle(workbook));
 		this.cellStyles.put(CellStyles.COLUMN_PLAIN_FOOTER, this.createColumnFooterStyle(workbook));
 		this.cellStyles.put(CellStyles.COLUMN_MONEY_FOOTER, this.createColumnMoneyFooterStyle(workbook));
+		this.cellStyles.put(CellStyles.MAIN_HEADER, this.createMainHeaderStyle(workbook));
+		this.cellStyles.put(CellStyles.REPORT_NAME, this.createReportNameStyle(workbook));
 	}
 	
 	
@@ -82,6 +84,37 @@ public class SpreadsheetFormatHelper {
 		CellStyle dateStyle = workbook.createCellStyle();
 		dateStyle.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("dd/MM/yyyy"));
 		return dateStyle;
+	}
+	
+	
+	
+	
+	/**
+	 * Creates a cell style for report name
+	 * @param workbook Base workbook
+	 * @return {@link CellStyle} instance for report name
+	 */
+	private CellStyle createReportNameStyle(Workbook workbook) {
+		CellStyle headerStyle = workbook.createCellStyle();
+		headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		headerStyle.setFont(this.getFont(Fonts.BOLD));
+		
+		return headerStyle;
+	}
+	
+	
+	
+	
+	/**
+	 * Creates a cell style for main header
+	 * @param workbook Base workbook
+	 * @return {@link CellStyle} instance for main header
+	 */
+	private CellStyle createMainHeaderStyle(Workbook workbook) {
+		CellStyle headerStyle = workbook.createCellStyle();
+		headerStyle.setFont(this.getFont(Fonts.BOLD));
+		
+		return headerStyle;
 	}
 	
 	
@@ -193,6 +226,8 @@ public class SpreadsheetFormatHelper {
 		DATE,
 		COLUMN_HEADER,
 		COLUMN_PLAIN_FOOTER,
-		COLUMN_MONEY_FOOTER
+		COLUMN_MONEY_FOOTER,
+		MAIN_HEADER,
+		REPORT_NAME
 	}
 }

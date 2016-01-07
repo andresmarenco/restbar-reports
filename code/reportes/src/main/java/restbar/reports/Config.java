@@ -20,7 +20,7 @@ public class Config {
 	public static void loadConfig() {
     	try
     	{
-			ClassLoader classLoader = App.class.getClassLoader();
+			ClassLoader classLoader = Config.class.getClassLoader();
 	    	InputStream stream = classLoader.getResourceAsStream("config.properties");
 			System.getProperties().load(stream);
 		} catch (IOException e) {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
 
 import restbar.reports.data.InvoiceSummary;
 import restbar.reports.output.SpreadsheetFormatHelper.CellStyles;
@@ -17,8 +18,9 @@ public class InvoicesSummarySpreadsheet extends SpreadsheetGenerator<InvoiceSumm
 	
 	
 	@Override
-	protected void writeColumnNames(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder) {
-		CellBuilder cellBuilder = new CellBuilder(rowBuilder.newRow().build());
+	protected Row writeColumnNames(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder) {
+		Row row = rowBuilder.newRow().build();
+		CellBuilder cellBuilder = new CellBuilder(row);
 		CellStyle headerStyle = formatHelper.getCellStyle(CellStyles.COLUMN_HEADER);
 		
 		cellBuilder.newCell()
@@ -86,6 +88,8 @@ public class InvoicesSummarySpreadsheet extends SpreadsheetGenerator<InvoiceSumm
 			.withValue(this.getReportText("total"))
 			.withStyle(headerStyle)
 			.build();
+		
+		return row;
 	}
 	
 	

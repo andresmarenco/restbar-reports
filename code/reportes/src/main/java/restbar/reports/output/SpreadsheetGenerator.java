@@ -15,6 +15,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
+
+import restbar.reports.data.ReportHeader;
+import restbar.reports.output.SpreadsheetFormatHelper.CellStyles;
 
 /**
  * Base class to generate spreadsheets
@@ -30,8 +34,9 @@ public abstract class SpreadsheetGenerator<T> {
 	 * Writes the column names of the table
 	 * @param formatHelper Spreadsheet format helper
 	 * @param rowBuilder {@link RowBuilder} instance with the current row count
+	 * @return {@link Row} with the column names
 	 */
-	protected abstract void writeColumnNames(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder);
+	protected abstract Row writeColumnNames(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder);
 	
 	
 	/**
@@ -76,21 +81,48 @@ public abstract class SpreadsheetGenerator<T> {
 	 * Writes the header of the sheet
 	 * @param formatHelper Spreadsheet format helper
 	 * @param rowBuilder {@link RowBuilder} instance with the current row count
+	 * @param reportName Name of the report
+	 * @param reportHeader Report header
+	 * @return Number of the last row from the header
 	 */
-	protected void writeHeader(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder) {
+	protected int writeHeader(SpreadsheetFormatHelper formatHelper, RowBuilder rowBuilder, String reportName, ReportHeader reportHeader) {
+		// Title of the company
+		new CellBuilder(rowBuilder.newRow().build()).newCell()
+			.withType(Cell.CELL_TYPE_STRING)
+			.withValue(reportHeader.getName())
+			.withStyle(formatHelper.getCellStyle(CellStyles.MAIN_HEADER))
+			.build();
 		
+		// Text of the header
+		for(String line : reportHeader.getText()) {
+			new CellBuilder(rowBuilder.newRow().build()).newCell().withType(Cell.CELL_TYPE_STRING).withValue(line).build();
+		}
+		
+		// Empty row
+		rowBuilder.newRow().build();
+		
+		// Name of the report
+		new CellBuilder(rowBuilder.newRow().build()).newCell()
+			.withType(Cell.CELL_TYPE_STRING)
+			.withValue(reportName)
+			.withStyle(formatHelper.getCellStyle(CellStyles.REPORT_NAME))
+			.build();
+
+		// Empty row
+		return rowBuilder.newRow().build().getRowNum();
 	}
 	
 	
 	
 	/**
 	 * Generates a spreadsheet with the given list
-	 * @param outputName Output file name
+	 * @param reportName Name of the report
+	 * @param reportHeader Report header
 	 * @param data List with data
 	 * @throws IOException 
 	 */
-	public void generate(String outputName, List<T> data) throws IOException {
-		log.info(MessageFormat.format("Creating \"{0}\"...", outputName));
+	public void generate(String reportName, ReportHeader reportHeader, List<T> data) throws IOException {
+		log.info(MessageFormat.format("Creating \"{0}\"...", reportName));
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet(this.getReportText());
@@ -100,11 +132,17 @@ public abstract class SpreadsheetGenerator<T> {
 			SpreadsheetFormatHelper formatHelper = new SpreadsheetFormatHelper(workbook);
 			RowBuilder rowBuilder = new RowBuilder(sheet);
 			
-			this.writeColumnNames(formatHelper, rowBuilder);
+			// Header
+			int lastHeaderRow = this.writeHeader(formatHelper, rowBuilder, reportName, reportHeader);
+			Row columnNamesRow = this.writeColumnNames(formatHelper, rowBuilder);
+			rowBuilder.mergeCellsFromRows(lastHeaderRow + 1, columnNamesRow.getLastCellNum() - 1);
+			
+			// Data + Footer
 			FooterData footerData = this.writeData(formatHelper, rowBuilder, data);
 			this.writeFooter(formatHelper, rowBuilder, footerData);
 		
-			FileOutputStream out = new FileOutputStream(new File("C:\\RestBar\\" + outputName));
+			// Output the file
+			FileOutputStream out = new FileOutputStream(new File("C:\\RestBar\\" + reportName + ".xls"));
 			workbook.write(out);
 
 			log.info("Report successfully generated!");
@@ -133,6 +171,29 @@ public abstract class SpreadsheetGenerator<T> {
 		public RowBuilder(HSSFSheet sheet) {
 			this.rowNum = 0;
 			this.sheet = sheet;
+		}
+		
+		
+		
+		/**
+		 * Merges the columns of the individual previous rows
+		 * @param row Last row to merge
+		 * @param cols Columns to merge
+		 */
+		public void mergeCellsFromRows(int row, int cols) {
+			for(int i = 0; i < row; i++) {
+				sheet.addMergedRegion(new CellRangeAddress(i, i, 0, cols));
+			}
+		}
+		
+		
+		
+		/**
+		 * Merges the columns of the individual previous rows
+		 * @param cols Columns to merge
+		 */
+		public void mergeCellsFromRows(int cols) {
+			this.mergeCellsFromRows(rowNum, cols);
 		}
 		
 		

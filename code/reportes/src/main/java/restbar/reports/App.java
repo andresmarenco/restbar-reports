@@ -19,11 +19,12 @@ public class App
         	
         	
         	LocalDate fromDate = new LocalDate(2015, 11, 1);
-        	LocalDate toDate = new LocalDate(2015, 11, 5);
+        	LocalDate toDate = new LocalDate(2015, 11, 30);
         	
         	ReportsController controller = new ReportsController();
         	
-        	controller.generateInvoicesReport(fromDate, toDate);
+//        	controller.generateInvoicesReport("1", fromDate, toDate);
+        	controller.generateInvoicesSummaryReport("1", fromDate, toDate);
         }
         catch (Exception e)
         {
