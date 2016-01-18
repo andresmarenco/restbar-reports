@@ -90,7 +90,6 @@ public class Main implements ActionListener {
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		dateMask = new MaskFormatter("##/##/####");
 		
-		Config.loadConfig();
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		initialize();
 	}
@@ -260,6 +259,14 @@ public class Main implements ActionListener {
 	private void initializeData() {
 		try
 		{
+			Config.loadConfig();
+
+			lblRestBarPath.setText(System.getProperty("database.path"));
+			lblRestBarPath.setToolTipText(lblRestBarPath.getText());
+			
+			lblOutputPath.setText(System.getProperty("report.output.path"));
+			lblOutputPath.setToolTipText(lblOutputPath.getText());
+			
 			reportsController = new ReportsController();
 			
 			for(ReportHeader header : reportsController.listAllHeaders()) {

@@ -1,6 +1,5 @@
 package restbar.reports;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
@@ -16,15 +15,17 @@ public class Config {
 	
 	/**
 	 * Loads the configuration file
+	 * @throws ReportsException 
 	 */
-	public static void loadConfig() {
+	public static void loadConfig() throws ReportsException {
     	try
     	{
 			ClassLoader classLoader = Config.class.getClassLoader();
 	    	InputStream stream = classLoader.getResourceAsStream("config.properties");
 			System.getProperties().load(stream);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			throw new ReportsException(ReportsException.NO_CONFIG, "Could not read configuration file");
 		}
 		
 	}
