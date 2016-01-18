@@ -47,16 +47,16 @@ public class ReportsController {
 		}
 		catch(ClassNotFoundException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not initialize database connection");
+			throw new ReportsException(ReportsException.INITIALIZE_DATABASE, "Could not initialize database connection");
 		} catch (ParserConfigurationException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not parse XML headers file");
+			throw new ReportsException(ReportsException.PARSE_HEADERS, "Could not parse XML headers file");
 		} catch (SAXException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not create DOM with headers file");
+			throw new ReportsException(ReportsException.PARSE_HEADERS, "Could not create DOM with headers file");
 		} catch (IOException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not read XML headers file");
+			throw new ReportsException(ReportsException.READ_HEADERS, "Could not read XML headers file");
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class ReportsController {
 			result = reportHeaderDAO.listAllHeaders();
 		} catch (XPathExpressionException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not find the headers in the file (is the format of the XML file correct?)");
+			throw new ReportsException(ReportsException.HEADERS_DATA, "Could not find the headers in the file (is the format of the XML file correct?)");
 		}
 		
 		return result;
@@ -98,15 +98,15 @@ public class ReportsController {
 		}
 		catch(IOException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not create ouput file");
+			throw new ReportsException(ReportsException.OUTPUT_FILE, "Could not create ouput file");
 		}
 		catch(SQLException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not obtain data from database connection");
+			throw new ReportsException(ReportsException.NO_DATA, "Could not obtain data from database connection");
 		}
 		catch (XPathExpressionException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not search the header in the file");
+			throw new ReportsException(ReportsException.HEADERS_DATA, "Could not search the header in the file");
 		}
 	}
 	
@@ -128,15 +128,15 @@ public class ReportsController {
 		}
 		catch(IOException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not create ouput file");
+			throw new ReportsException(ReportsException.OUTPUT_FILE, "Could not create ouput file");
 		}
 		catch(SQLException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not obtain data from database connection");
+			throw new ReportsException(ReportsException.NO_DATA, "Could not obtain data from database connection");
 		}
 		catch (XPathExpressionException ex) {
 			log.error(ex.getMessage(), ex);
-			throw new ReportsException("Could not search the header in the file");
+			throw new ReportsException(ReportsException.HEADERS_DATA, "Could not search the header in the file");
 		}
 	}
 	

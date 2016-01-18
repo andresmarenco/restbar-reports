@@ -79,7 +79,6 @@ public class ReportHeader implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "ReportHeader [id=" + id + ", name=" + name + ", text=" + text
-				+ "]";
+		return name;
 	}
 }

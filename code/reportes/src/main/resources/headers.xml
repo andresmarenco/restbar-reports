@@ -2,8 +2,17 @@
 <headers>
 	<header>
 		<id>1</id>
-		<title><![CDATA[Inversiones Ankris, S.A.]]></title>
-		<text><![CDATA[Línea 1]]></text>
-		<text><![CDATA[Línea 2]]></text>
+		<title><![CDATA[R y M El unomás Rodrigues y Murillo, S.A]]></title>
+		<text><![CDATA[Cédula Juridica. 3-101-504017]]></text>
+		<text><![CDATA[Centro Pérez Zeledón, San Isidro de El General]]></text>
+		<text><![CDATA[REPORTE DE VENTAS POR PERIODO]]></text>
+	</header>
+	
+	<header>
+		<id>2</id>
+		<title><![CDATA[Consultora de Propiedades de C.R, S.A]]></title>
+		<text><![CDATA[Cédula Juridica. 3-101-341958]]></text>
+		<text><![CDATA[Camino al Aeropuerto, San Isidro de El General]]></text>
+		<text><![CDATA[REPORTE DE VENTAS POR PERIODO]]></text>
 	</header>
 </headers>

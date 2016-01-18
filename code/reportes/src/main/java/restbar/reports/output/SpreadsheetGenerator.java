@@ -124,6 +124,7 @@ public abstract class SpreadsheetGenerator<T> {
 	public void generate(String reportName, ReportHeader reportHeader, List<T> data) throws IOException {
 		log.info(MessageFormat.format("Creating \"{0}\"...", reportName));
 
+		FileOutputStream out = null;
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet(this.getReportText());
 		
@@ -142,13 +143,18 @@ public abstract class SpreadsheetGenerator<T> {
 			this.writeFooter(formatHelper, rowBuilder, footerData);
 		
 			// Output the file
-			FileOutputStream out = new FileOutputStream(new File("C:\\RestBar\\" + reportName + ".xls"));
+			String outputPath = System.getProperty("report.output.path").replace('\\', '/');
+			out = new FileOutputStream(new File(MessageFormat.format("{0}/{1}.xls", outputPath, reportName)));
 			workbook.write(out);
 
 			log.info("Report successfully generated!");
 		}
 		finally {
 			workbook.close();
+			
+			if(out != null) {
+				out.close();
+			}
 		}
 	}
 	
